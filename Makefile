@@ -1,4 +1,4 @@
-build: check_java
+build: 
 	source ./bin/check_java.sh && ./bin/sbt compile test
 
 publish: build
