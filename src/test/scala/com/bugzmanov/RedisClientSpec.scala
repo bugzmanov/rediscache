@@ -14,7 +14,7 @@ import scala.concurrent.duration._
 import scala.util.Random
 
 class RedisClientSpec extends WordSpec  with Matchers with Eventually with BeforeAndAfterAll {
-  private lazy val redisPort: Int = (new ServerSocket(0)).getLocalPort
+  private lazy val redisPort: Int = PortFinder.getFreePort
   private lazy val redisServer = new RedisServer(redisPort)
   private lazy val redisClient = new JedisRedisClient("localhost", redisPort,
     Duration.ofMillis(100).toMillis.millis,
