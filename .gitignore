@@ -110,3 +110,6 @@ project/plugins/project/
 *.metals
 
 # End of https://www.gitignore.io/api/sbt,scala,intellij
+
+jdk.tar.gz
+./jdk/
