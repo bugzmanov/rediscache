@@ -1,0 +1,14 @@
+deleteDatasources:
+  - name: Prometheus
+    orgId: 1
+
+datasources:
+  - name: 'graphite'
+    type: 'graphite'
+    access: 'proxy'
+    org_id: 1
+    url: 'http://graphite:80'
+    is_default: true
+    version: 1
+    editable: true
+

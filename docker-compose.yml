@@ -1,0 +1,58 @@
+version: '2'
+
+networks:
+  app-tier:
+    external:
+      name: app-tier
+#    driver: bridge
+#    driver_opts:
+#      com.docker.network.enable_ipv6: "false"
+
+services:
+  redis:
+    image: 'redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - app-tier
+    expose:
+      - "6379"
+    ports:
+      - "6379:6379"
+
+  cache:
+    image: 'rediscache:0.1.0-SNAPSHOT'
+    links:
+      - redis
+      - graphite
+    ports:
+      - "8080:8080"
+    networks:
+      - app-tier
+    volumes:
+     - ./config/application-docker.conf:/opt/rediscache/application.conf
+
+  graphite:
+    image: 'graphiteapp/graphite-statsd'
+#    volumes:
+#      - ./config/.htpasswd:/etc/nginx/.htpasswd
+    expose:
+      - "80"
+      - "2003"
+      - "2004"
+    networks:
+      - app-tier
+    ports:
+      - "2003:2003"
+      - "2004:2004"
+      - "8081:80"
+
+  grafana:
+    build: './grafana'
+    container_name: 'grafana'
+    links:
+      - graphite
+    ports:
+      - '3000:3000'
+    networks:
+      - app-tier
