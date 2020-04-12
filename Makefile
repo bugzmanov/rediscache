@@ -1,5 +1,4 @@
-
-build:
+build: check_java
 	./bin/sbt compile test
 
 publish: build
@@ -21,3 +20,7 @@ clean:
 
 update-dashboards:
 	./update-dashboards.sh
+
+
+check_java:
+	./bin/check_java.sh

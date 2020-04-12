@@ -1,8 +1,12 @@
-# Plan
+# Problem analysis
+
+Redis is a in-memory cache by itself 
+
+## Plan
 
 1. Redis-client
 2. Cache              [Done]
-3. Memory control
+3. Memory control     [Done]
 4. Webserver          [Done]
 5. Monitoring         [Done]
 6. Docker             [Done]

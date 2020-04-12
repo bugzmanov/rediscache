@@ -59,7 +59,7 @@ class UserBehavior(TaskSet):
 
 class WebsiteUser(HttpLocust):
     task_set = UserBehavior
-    wait_time = between(0.0, 1.0)
+    wait_time = between(0.0, 2.0)
 
 # class LargeTaskSet(TaskSet):
 #     tasks = {largest_test: 1}
