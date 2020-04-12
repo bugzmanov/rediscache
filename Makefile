@@ -1,4 +1,4 @@
-build: 
+build:
 	source ./bin/check_java.sh && ./bin/sbt compile test
 
 publish: build
@@ -15,8 +15,8 @@ test: create
 clean:
 	docker-compose down
 	docker-compose rm
-	docker network rm app-tier
 	docker rm rediscache-test
+	docker network rm app-tier
 	docker image rm rediscache-test
 
 update-dashboards:
