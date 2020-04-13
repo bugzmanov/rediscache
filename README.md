@@ -14,7 +14,39 @@ Important constraints:
 
 Given that keys & values can potentially be relatively large, it's important to keep control of memory usage in addition to keys set size.
 
-## Web protocol specification
+## Protocol specification
+
+`GET /v1/<key>`
+
+Response content type: `application/octet-stream`
+
+| Status Code   | Description           | 
+| ------------- |:-------------:| 
+| 200           | Successfull operation | 
+| 404           | No data for that key      | 
+| 500           | Service error      | 
+
+
+## Running instructions
+
+```bash
+
+git clone https://github.com/bugzmanov/rediscache.git
+cd rediscahe 
+make test
+
+```
+
+Then you can open grafana dashboard: `http://<host>:3000/d/dw2aBiqkz/mydashboard?refresh=5s&orgId=1` (admin/admin)
+
+To run longer demo:
+
+```
+    make demo
+```
+
+Configuration file for docker-compose environment:
+https://github.com/bugzmanov/rediscache/blob/master/config/application-docker.conf
 
 ## Overall description
 
@@ -74,9 +106,9 @@ I didn't have enough time to play around with this approach. It doesn't look har
 
 This approach makes sense only in case of smaller population of large objects that are accessed infrequently.
 
-## Monitoring & Alerts
+## Monitoring & Alerting
 
-Webcache generates metrics on all layers: web, cache, redisclient.
+Webcache generates metrics for all layers: web, cache, redisclient.
 Metrics are generated using micrometer library, and can be adapted to report to any metrics collection system.
 
 Currently metrics are reported to graphite and can be observed using grafana dashboard.
@@ -84,28 +116,30 @@ Currently metrics are reported to graphite and can be observed using grafana das
 ![image](https://user-images.githubusercontent.com/502482/79080375-517fbb00-7ce2-11ea-8fa8-b0262a141e21.png)
 
 
-Alerting signals:
+### Alerting conditions:
 
 * Running out of memory: when free jvm memory size becomes less than 300 MiB. Indicate service overload. 
-Strategy: reduce cache capacity and/or decrease number of allowed active connections.
+Strategy: 
+    - reduce cache capacity and/or decrease number of allowed active connections.
 
 * Cache is down: no heat beats from webcache reached graphite instance for the last minute. 
 Strategy: 
-- make sure cache is up and running
-- make sure it can connect to graphite instance
+    - make sure cache is up and running
+    - make sure it can connect to graphite instance
 
 * Redis access errors: webcache is getting errors while reading data from redis.
 Stategy:
-- make sure backing redis instance is up and running
-- make sure webcache can connect to to redis instance
+    - make sure backing redis instance is up and running
+    - make sure webcache can connect to to redis instance
 
 ## Load testing
 
+https://github.com/bugzmanov/rediscache/blob/master/locust/locustfile.py
 
 ## Implementation plan
 
 1. Redis-client       [90%]
-   - opt: custom client that exposes inputstream
+   - opt: custom client that provides access to underlying InputStream
 2. Cache              [90%]
    - opt: skip large objects
    - opt: ehcache with offheap
@@ -114,26 +148,3 @@ Stategy:
 5. Monitoring         [Done]
 6. Docker             [Done]
 7. Tests              [90%]
-
-Challenges:
-
-max value 512MB
-max key 512MB
-
-http get 2,048 characters
-
-
-- timeouts
-
-Memory pressure
-  - size > threshold
-  - if mem limit hit strategy
-  
-
-- cache nil ?
-
-- embedded redis for tests
-
-- check if key being retrieved for concurrent user
-
-
