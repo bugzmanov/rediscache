@@ -32,7 +32,7 @@ Response content type: `application/octet-stream`
 ```bash
 
 git clone https://github.com/bugzmanov/rediscache.git
-cd rediscahe 
+cd rediscache 
 make test
 
 ```
