@@ -6,16 +6,17 @@ import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics
 import io.micrometer.core.instrument.binder.system.ProcessorMetrics
 import io.micrometer.core.instrument.util.HierarchicalNameMapper
 import io.micrometer.core.instrument.{Clock, Gauge, MeterRegistry}
+import io.micrometer.elastic.{ElasticConfig, ElasticMeterRegistry}
 import io.micrometer.graphite.{GraphiteConfig, GraphiteMeterRegistry}
 
-class Metrics (graphiteHost: String, graphitePort: Int) {
+class Metrics (backendhost: String, port: Int) {
 
   private val graphiteConfig = new GraphiteConfig() {
-    override def host() :String = graphiteHost
+    override def host() :String = backendhost
 
     override def get(k: String): String = {
       k match {
-        case "graphite.port" => graphitePort.toString
+        case "graphite.port" => port.toString
         case "graphite.protocol" =>  "PLAINTEXT"
         case "graphite.step" => "PT10S"
         case _ => null //defaults
@@ -23,10 +24,27 @@ class Metrics (graphiteHost: String, graphitePort: Int) {
     }
   }
 
-  val registry: MeterRegistry = new GraphiteMeterRegistry(
-    graphiteConfig, Clock.SYSTEM,
-    HierarchicalNameMapper.DEFAULT
-  )
+//  val registry: MeterRegistry = new GraphiteMeterRegistry(
+//    graphiteConfig, Clock.SYSTEM,
+//    HierarchicalNameMapper.DEFAULT
+//  )
+
+  import io.micrometer.core.instrument.Clock
+  import io.micrometer.core.instrument.MeterRegistry
+
+  val elasticConfig: ElasticConfig = new ElasticConfig() {
+    override def host() :String = backendhost
+
+    override def get(k: String): String = {
+      k match {
+        case "elastic.port" => port.toString
+        case "elastic.step" => "PT10S"
+        case "elastic.indexDateFormat" => "yyyy-MM-dd"
+        case _ => null //defaults
+      }
+    }
+  }
+  val registry: MeterRegistry = new ElasticMeterRegistry(elasticConfig, Clock.SYSTEM)
 }
 
 class Intrumentation(registry: MeterRegistry) {

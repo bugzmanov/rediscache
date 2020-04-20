@@ -17,14 +17,15 @@ services:
       - app-tier
     expose:
       - "6379"
-#    ports:
-#      - "6379:6379"
+    ports:
+      - "6379:6379"
 
   cache:
     image: 'rediscache:0.1.0-SNAPSHOT'
     links:
       - redis
       - graphite
+      - elasticsearch
     ports:
       - "8080:8080"
     networks:
@@ -40,16 +41,28 @@ services:
       - "2004"
     networks:
       - app-tier
-#    ports:
-#      - "2003:2003"
-#      - "2004:2004"
-#      - "8081:80"
+    ports:
+      - "2003:2003"
+      - "2004:2004"
+      - "8081:80"
+
+  elasticsearch:
+    image: 'sebp/elk'
+    expose:
+      - "9200"
+    networks:
+      - app-tier
+    ports:
+      - "9200:9200"
+      - "5044:5044"
+      - "5601:5601"
 
   grafana:
     build: './grafana'
     container_name: 'grafana'
     links:
       - graphite
+      - elasticsearch
     ports:
       - '3000:3000'
     networks:

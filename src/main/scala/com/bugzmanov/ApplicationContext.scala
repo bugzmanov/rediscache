@@ -9,8 +9,8 @@ import scala.concurrent.duration._
 
 class ApplicationContext(config: Config) {
 
-  val metrics = new Metrics(config.getString("rediscache-app.metrics.graphite-host"),
-    config.getInt("rediscache-app.metrics.graphite-port"))
+  val metrics = new Metrics(config.getString("rediscache-app.metrics.host"),
+    config.getInt("rediscache-app.metrics.port"))
 
   val metricsInstrumentation = new Intrumentation(metrics.registry)
 

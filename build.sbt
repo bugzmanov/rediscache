@@ -20,7 +20,7 @@ lazy val root = (project in file(".")).
       "io.dropwizard.metrics5" % "metrics-graphite"     % "5.0.0",
       "io.micrometer"     % "micrometer-registry-graphite"  % "latest.release",
       "fr.davit"          %% "akka-http-metrics-dropwizard" % "1.0.0",
-
+      "io.micrometer" % "micrometer-registry-elastic" % "latest.release",
       "it.ozimov"         % "embedded-redis"            % "0.7.2"         % Test,
       "com.typesafe.akka" %% "akka-http-testkit"        % akkaHttpVersion % Test,
       "com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion     % Test,

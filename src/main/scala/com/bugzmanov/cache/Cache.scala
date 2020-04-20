@@ -39,7 +39,6 @@ class GuavaBasedCache(totalSizeMB: Int,
                       instrumentGuava: Guava[String, Array[Byte]] => Guava[String, Array[Byte]]  = identity) extends Cache {
 
   private val cacheSize: CacheSize = instrument(new CacheSize)
-  System.out.println(expiry.getSeconds);
    private val cache = instrumentGuava(CacheBuilder.newBuilder()
     .maximumSize(elementsCount)
     .removalListener((notification: RemovalNotification[String, Array[Byte]]) => {
