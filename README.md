@@ -1,3 +1,8 @@
+## Requirements
+
+To build a transparent Redis proxy service. This proxy is implemented as an HTTP web service which allows the ability to add additional features on top of Redis (e.g. caching and sharding)
+
+
 ## Problem analysis
 
 Redis itself is an in-memory cache, potential reasons for putting another in-mem cache in-front of it:
