@@ -119,16 +119,16 @@ Currently metrics are reported to graphite and can be observed using the grafana
 ### Alerting conditions:
 
 * Running out of memory: when free JVM memory size becomes less than 300 MiB. Indicate service overload. 
-Strategy: 
+<br/>Mitigation strategy: 
     - reduce cache capacity and/or decrease the number of allowed active connections.
 
 * Cache is down: graphite hasn't received any heartbeats from the webcache for the last minute. 
-Mitigation strategy: 
+<br/>Mitigation strategy: 
     - make sure cache is up and running
     - make sure it can connect to graphite instance
 
 * Redis access errors: webcache is getting errors while reading data from Redis.
-Mitigation strategy:
+<br/>Mitigation strategy:
     - make sure backing Redis instance is up and running
     - make sure webcache can connect to the Redis instance
 
