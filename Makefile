@@ -11,12 +11,12 @@ create: publish
 test: create
 	-docker rm rediscache-test
 	docker build --pull ./locust -t rediscache-test
-	docker run -e TARGET_URL=http://cache:8080 -e REDIS_HOST=redis -e LOCUST_OPTS="--clients=100 -r 10 --no-web --run-time=60" --network app-tier --name rediscache-test rediscache-test:latest
+	docker run -e TARGET_URL=http://cache:8080 -e REDIS_HOST=redis --network app-tier --name rediscache-test rediscache-test:latest -f /mnt/locustfile.py --headless --host http://cache:8080 --users=100 --hatch-rate 10 --run-time 60
 
 demo: 
 	-docker rm rediscache-test
 	docker build --pull ./locust -t rediscache-test
-	docker run -e TARGET_URL=http://cache:8080 -e REDIS_HOST=redis -e LOCUST_OPTS="--clients=300 -r 10 --no-web --run-time=1200" --network app-tier --name rediscache-test rediscache-test:latest
+	docker run -e TARGET_URL=http://cache:8080 -e REDIS_HOST=redis --network app-tier --name rediscache-test rediscache-test:latest -f /mnt/locustfile.py --headless --host http://cache:8080 --users=100 --hatch-rate 10 --run-time 600
 
 clean:
 	-docker-compose down

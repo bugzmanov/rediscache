@@ -1,4 +1,4 @@
-from locust import HttpLocust, TaskSet, between
+from locust import HttpUser, TaskSet, between
 import random
 import string
 import redis
@@ -54,11 +54,8 @@ def largest_test(l):
     l.client.get("/v1/large_%i" % i, name="large")
 
 
-class UserBehavior(TaskSet):
+class WebsiteUser(HttpUser):
     tasks = {small: 20, medium: 10, large: 1, alwaysmiss:10}
-
-class WebsiteUser(HttpLocust):
-    task_set = UserBehavior
     wait_time = between(0.0, 2.0)
 
 # class LargeTaskSet(TaskSet):
