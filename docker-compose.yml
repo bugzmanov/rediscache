@@ -4,9 +4,6 @@ networks:
   app-tier:
     external:
       name: app-tier
-#    driver: bridge
-#    driver_opts:
-#      com.docker.network.enable_ipv6: "false"
 
 services:
   redis:
